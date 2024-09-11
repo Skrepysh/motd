@@ -1,19 +1,32 @@
 #!/bin/bash
+clear
+echo "Hi! This script will install custom MOTD for your Ubuntu"
+read -p "Continue? [Y/n] " -r REPLY
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+	# Install packages
+	echo "Installing toilet"
+	apt-get update >> /dev/null 2>&1
+	apt-get install toilet -y >> /dev/null 2>&1
 
-# Install packages
-apt update
-apt install toilet
-apt install update-notifier
+	# Download the archive
+	echo "Downloading motd"
+	curl -L https://github.com/Skrepysh/motd/archive/master.tar.gz 2>/dev/null | tar -zxv > /dev/null
 
-# Download the archive
-curl -L https://github.com/NeonWizard/spookdev-motd/archive/master.tar.gz | tar -zxv
+	# Move old motd files to directory
+	echo "Backing up old motd to /etc/update-motd.d/old-motd"
+	mkdir /etc/update-motd.d/old-motd
+	mv /etc/update-motd.d/* /etc/update-motd.d/old-motd > /dev/null 2>&1
 
-# Move old motd files to directory
-mkdir /etc/update-motd.d/old-motd
-mv /etc/update-motd.d/* /etc/update-motd.d/old-motd
+	# Move unzipped motd files to /etc
+	echo "Installing motd"
+	mv motd-master/motd/* /etc/update-motd.d > /dev/null 2>&1
 
-# Move unzipped motd files to /etc
-mv spookdev-motd-master/motd/* /etc/update-motd.d
+	# Clean up downloaded files
+	echo "Cleaning up"
+	rm -rf spookdev-motd-master
+	echo "Done!"
+else
+	echo "Installation has been cancelled. Bye!"
+fi
 
-# Clean up downloaded files
-rm -rf spookdev-motd-master
