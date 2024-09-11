@@ -24,7 +24,8 @@ then
 
 	# Clean up downloaded files
 	echo "Cleaning up"
-	rm -rf spookdev-motd-master
+	rm -rf motd-master
+	rm -- "$0"
 	echo "Done!"
 else
 	echo "Installation has been cancelled. Bye!"
