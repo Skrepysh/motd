@@ -5,7 +5,7 @@ read -p "Continue? [Y/n] " -r REPLY
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
 	# Install packages
-	echo "Installing toilet"
+	echo "Installing toilet (this may take up to 10 seconds)"
 	apt-get update >> /dev/null 2>&1
 	apt-get install toilet -y >> /dev/null 2>&1
 
